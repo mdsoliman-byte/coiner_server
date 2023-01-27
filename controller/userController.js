@@ -16,4 +16,17 @@ exports.createUser = asyncHandler(async (req, res) => {
 
 
 })
+exports.loginUser = asyncHandler(async (req, res) => {
+    // get user login data from input body 
+    const { gmail, password } = req.body;
+    // check if user exist or not 
+    const findUser = await userModel.findOne({ gmail })
+    // match hash  password 
+    const pass = await findUser.isPasswordMatched(password)
+    if (findUser && pass) {
+        res.status(200).json(findUser)
 
+    } else {
+        throw new Error("Invalid UserName Or Password ")
+    }
+})
