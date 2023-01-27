@@ -1,5 +1,6 @@
 const userModel = require("../models/userModel");
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
+const { createToken } = require("../config/jwtToken");
 exports.createUser = asyncHandler(async (req, res) => {
     console.log(req.body)
     // find user from req body 
@@ -22,7 +23,16 @@ exports.loginUser = asyncHandler(async (req, res) => {
     // match hash  password 
     const pass = await findUser.isPasswordMatched(password)
     if (findUser && pass) {
-        res.status(200).json(findUser)
+        const user = {
+            _id: findUser?._id,
+            firstname: findUser?.firstname,
+            lastname: findUser?.lastname,
+            gmail: findUser?.gmail,
+            mobile: findUser?.mobile,
+            // create and  pass user token by usiging user id 
+            token: createToken(findUser?._id)
+        }
+        res.status(200).json(user)
 
     } else {
         throw new Error("Invalid UserName Or Password ")
