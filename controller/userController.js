@@ -13,8 +13,6 @@ exports.createUser = asyncHandler(async (req, res) => {
     } else {
         throw new Error("User Allready Exists")
     }
-
-
 })
 exports.loginUser = asyncHandler(async (req, res) => {
     // get user login data from input body 
