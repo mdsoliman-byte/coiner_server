@@ -5,14 +5,15 @@ const dbConnenction = require("./config/dbConnection")
 const bodyParser = require("body-parser")
 const authRouter = require("./routes/authRouiter")
 env.config()
-dbConnenction()
-const PORT = process.env.PORT
 
+const PORT = process.env.PORT
+dbConnenction()
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
 app.use(bodyParser.json())
-app.use("/", (req, res) => {
-    res.send("hello im from server ")
-})
-app.use("api/user", authRouter)
+
+app.use("/api/user", authRouter)
 
 
 
