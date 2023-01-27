@@ -1,8 +1,8 @@
 const userModel = require("../models/userModel");
 const asyncHandler = require('express-async-handler');
 const { createToken } = require("../config/jwtToken");
+const { all } = require("../routes/authRouiter");
 exports.createUser = asyncHandler(async (req, res) => {
-    console.log(req.body)
     // find user from req body 
     const gmail = req.body.gmail;
     // find user from database 
@@ -36,5 +36,17 @@ exports.loginUser = asyncHandler(async (req, res) => {
 
     } else {
         throw new Error("Invalid UserName Or Password ")
+    }
+})
+
+
+// Get All User  
+
+exports.getAllUser = asyncHandler(async (req, res) => {
+    try {
+        const allUser = await userModel.find();
+        res.status(200).json(allUser)
+    } catch (error) {
+        throw new Error(error)
     }
 })

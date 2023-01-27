@@ -27,6 +27,10 @@ const userModelSchima = new mongoose.Schema({
         required: true,
 
     },
+    role: {
+        type: String,
+        default: "user"
+    }
 }, { versionKey: false })
 // user bcrypt packeg for password hash 
 userModelSchima.pre("save", async function (next) {
@@ -34,7 +38,7 @@ userModelSchima.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, salt)
 })
 // bcrypt password red 
-userModelSchima.methods.isPasswordMatched = async function(pass){
+userModelSchima.methods.isPasswordMatched = async function (pass) {
     return await bcrypt.compare(pass, this.password)
 }
 const userModel = mongoose.model("User", userModelSchima)
