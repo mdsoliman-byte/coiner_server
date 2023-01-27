@@ -1,8 +1,8 @@
 const userModel = require("../models/userModel");
 const asyncHandler = require('express-async-handler');
 const { createToken } = require("../config/jwtToken");
-const { all } = require("../routes/authRouiter");
-exports.createUser = asyncHandler(async (req, res) => {
+// const { all } = require("../routes/authRouiter");
+const createUser = asyncHandler(async (req, res) => {
     // find user from req body 
     const gmail = req.body.gmail;
     // find user from database 
@@ -15,7 +15,7 @@ exports.createUser = asyncHandler(async (req, res) => {
         throw new Error("User Allready Exists")
     }
 })
-exports.loginUser = asyncHandler(async (req, res) => {
+const loginUser = asyncHandler(async (req, res) => {
     // get user login data from input body 
     const { gmail, password } = req.body;
     // check if user exist or not 
@@ -42,7 +42,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
 
 // Get All User  
 
-exports.getAllUser = asyncHandler(async (req, res) => {
+const getAllUser = asyncHandler(async (req, res) => {
     try {
         const allUser = await userModel.find();
         res.status(200).json(allUser)
@@ -50,3 +50,14 @@ exports.getAllUser = asyncHandler(async (req, res) => {
         throw new Error(error)
     }
 })
+// get single user by pass url  user id 
+const getAUser = asyncHandler(async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const findUser = await userModel.findById(userId);
+        res.status(200).json(findUser);
+    } catch (error) {
+        throw new Error(error)
+    }
+})
+module.exports = {createUser, loginUser, getAllUser, getAUser}
