@@ -38,7 +38,23 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new Error("Invalid UserName Or Password ")
     }
 })
+// update User use user id pass by url preams 
+const updateUser = asyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    try {
 
+        const updateUser = await userModel.findByIdAndUpdate(userId, {
+            firstname: req.body?.firstname,
+            lastname: req.body?.lastname,
+            gmail: req.body?.gmail,
+            mobile: req.body?.mobile,
+        }, { new: true })
+        console.log(updateUser)
+        res.status(200).json(updateUser)
+    } catch (error) {
+        throw new Error(error)
+    }
+})
 
 // Get All User  
 
@@ -60,13 +76,14 @@ const getAUser = asyncHandler(async (req, res) => {
         throw new Error(error)
     }
 })
+// delete user use user id pass by user 
 const deleteAuser = asyncHandler(async (req, res) => {
     try {
         const userId = req.params.id;
         const deleteuser = await userModel.findByIdAndDelete(userId);
-        res.json({deleteuser})
+        res.json(deleteuser)
     } catch (error) {
         throw new Error(error)
     }
 })
-module.exports = { createUser, loginUser, getAllUser, getAUser, deleteAuser }
+module.exports = { createUser, loginUser, getAllUser, getAUser, deleteAuser, updateUser }
