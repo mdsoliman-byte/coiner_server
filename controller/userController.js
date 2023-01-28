@@ -60,4 +60,13 @@ const getAUser = asyncHandler(async (req, res) => {
         throw new Error(error)
     }
 })
-module.exports = {createUser, loginUser, getAllUser, getAUser}
+const deleteAuser = asyncHandler(async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const deleteuser = await userModel.findByIdAndDelete(userId);
+        res.json({deleteuser})
+    } catch (error) {
+        throw new Error(error)
+    }
+})
+module.exports = { createUser, loginUser, getAllUser, getAUser, deleteAuser }
